@@ -77,9 +77,6 @@
   <h2>Customer Registration Form</h2>
 
   <form action="create.php" method="post">
-    <label for="myid">ID</label>
-    <input type="text" name="id" id="myid" placeholder="Enter ID">
-
     <label for="myfirstname"> Name</label>
     <input type="text" name="name" id="myname" placeholder="Enter your name " required>
 
@@ -99,9 +96,6 @@
 
       <input type="radio" name="gender" id="mygen2" value="Female">
       <label for="mygen2">&#9898; Female</label>
-
-      <input type="radio" name="gender" id="mygen3" value="Other">
-      <label for="mygen3">&#9898; Other</label>
     </div>
 
     <label for="myadd">Address</label>
