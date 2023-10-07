@@ -1,3 +1,22 @@
+<?php
+
+include 'db_connection.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+}else{
+    session_start();
+    $user_id = $_SESSION['user_id'];
+    $user_name = $_SESSION['user_name'];
+    $user_password = $_SESSION['user_password'];
+
+}
+
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,7 +100,7 @@
             color: #3498db;
             font-size: 1.1em;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .product button {
             padding: 10px 20px;
@@ -118,7 +137,7 @@
             font-size: 1em;
         }
 
-        .search-bar button {
+        .addButton {
             padding: 10px 20px;
             background-color: #3498db;
             color: white;
@@ -126,9 +145,10 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
+            text-decoration: none;
         }
 
-        .search-bar button:hover {
+        .addButton:hover {
             background-color: #2980b9;
         }
 
@@ -152,17 +172,55 @@
     <header>
         <h1>Welcome to Iram's SwiftCart</h1>
     </header>
+    <h1>Hello <?php echo $user_name ?></h1>
 
-    <div class="search-bar">
+    <!-- <div class="search-bar">
         <input type="text" placeholder="Search products...">
         <button onclick="searchProducts()">Search</button>
-        <span class="icon"><i class="fas fa-camera"></i></span> <!-- Camera icon -->
-        <span class="icon"><i class="fas fa-microphone"></i></span> <!-- Microphone icon -->
-    </div>
+        <span class="icon"><i class="fas fa-camera"></i></span> 
+        <span class="icon"><i class="fas fa-microphone"></i></span> 
+    </div> -->
     
     <div class="product-list">
 
-        <div class="product">
+    <?php
+
+        $query = "SELECT * FROM movies";
+        $result = mysqli_query($conn, $query);
+
+        if(mysqli_num_rows($result) > 0){
+            // print_r($result->fetch_all());
+    
+            foreach ($result as $movie){
+                $movie_id = $movie['id'];
+                $title = $movie['title'];
+                $year = $movie['year'];
+                $description = $movie['description'];
+                $image = $movie['url'];
+                
+                $html = <<<HTML
+                    <div class="product">
+                        <img src="$image" alt="$title">
+                        <h2>$title</h2>
+                        <p>$description</p>
+                        <span>$year</span>
+                        <a class="addButton" href="add_review.php?movie_id={$movie['id']}">Add Review</a>
+                        <!-- Add css here, this br is only of temporary use -->
+                        <br>
+                        <br>
+                        <br>
+                        <a class="addButton" href="review.php?movie_id={$movie['id']}">View Reviews</a>
+                    </div>
+                    HTML;
+    
+                echo $html;
+            }
+        }
+
+
+    ?>
+
+        <!-- <div class="product">
             <img src="luggagebag.jpg" alt="Travelling bags">
             <h2>Travelling bags</h2>
             <p>Description:Urban travel luggage , 70 L Strolley Duffel, high quality travelling bag</p>
@@ -280,7 +338,7 @@
             <p>Description:</p></n>
             <span>520</span>
             <button onclick="addToCart('slingbag')">Add to Cart</button>
-        </div>
+        </div> -->
     </div>
 
     <div id="search-result">
@@ -293,10 +351,10 @@
 
     <nav>
         <ul>
-            <li><a href="home.php"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="notification.php"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a href="account.php"><i class="fas fa-user"></i> Account</a></li>
-            <li><a href="add_to_cart.php"><i class="fas fa-shopping-cart"></i> Cart </a></li>
+            <li><a href="product_page.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="registration.php"><i class="fas fa-bell"></i> Create User</a></li>
+            <li><a href="reviews.php"><i class="fas fa-user"></i> Reviews</a></li>
+            <li><a href="buy_movies.php"><i class="fas fa-shopping-cart"></i> Buy Movies </a></li>
         </ul>
     </nav>
      

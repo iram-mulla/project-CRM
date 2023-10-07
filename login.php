@@ -1,3 +1,33 @@
+<?php
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    
+include 'db_connection.php';
+
+  $username = $_POST["username"];
+  $password = $_POST["password"];
+
+  $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+  $result = mysqli_query($conn, $query);
+
+  if(mysqli_num_rows($result) > 0)    
+      {
+          session_start();
+          $row = mysqli_fetch_assoc($result);
+          $_SESSION['user_id'] = $row['id'];
+          $_SESSION['user_name'] = $row['name'];
+          $_SESSION['user_password'] = $row['password'];
+
+          header("location:product_page.php");
+  }else{
+      echo "<script>alert('Username or Password is invalid')</script>";
+  }
+
+
+
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +88,7 @@
 <div class="container">
   <h2>Login Form</h2>
 
-  <form action="product_page.php" method="post">
+  <form action="login.php" method="post">
     <label for="myusername">Username</label>
     <input type="text" name="username" id="myusername" placeholder="Enter Username" required>
 
